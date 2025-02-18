@@ -1,11 +1,13 @@
-import React from "react";
-import Logos from './app/_components/Logos'
 
-function Header() {
-return(<div>
-    <Logos/>
+import React from 'react'
+import Logo from './Logo'
+
+const Header = () => {
+  return (
+    <div>
+    <Logo/>
     </div>
-)
+  )
 }
 
-export default Header;
+export default Header
