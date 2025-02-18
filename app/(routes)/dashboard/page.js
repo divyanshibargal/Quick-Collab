@@ -1,9 +1,8 @@
-import { UserButton } from '@clerk/nextjs'
-
+import Header from './_components/Header'
 function Dashboard() {
 return (
     <div>
-        <UserButton/>
+        <Header/>
     </div>
 )
 }
