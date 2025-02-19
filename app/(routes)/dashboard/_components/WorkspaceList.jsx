@@ -1,5 +1,6 @@
 "use client"
 import { useUser } from "@clerk/nextjs";
+import { Button } from "../../../../components/ui/button";
 function WorkspaceList() {
     const{user}=useUser();
 return (
@@ -8,6 +9,7 @@ return (
         
         <div className="flex justify-between">
             <h2 className="font-bold text-2xl">Hello,{user?.fullName} </h2>
+            <Button>+</Button>
 
         </div>
         
