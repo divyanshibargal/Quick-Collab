@@ -1,8 +1,11 @@
 import Header from './_components/Header'
+import WorkspaceList from './_components/WorkspaceList'
 function Dashboard() {
 return (
     <div>
         <Header/>
+
+        <WorkspaceList/>
     </div>
 )
 }
