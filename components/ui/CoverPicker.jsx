@@ -1,25 +1,52 @@
+import Image from "next/image"
+import CoverOptions from "../ui/CoverOptions"
 import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "../ui/dialog"
+import { DialogClose } from "@radix-ui/react-dialog"
+import { Button } from "./button"
+import { useState } from "react"
 
 
-function CoverPicker() {
+function CoverPicker({children}) {
+    const[selectedCover,setSelectedCover]=useState();
 return (
 <Dialog>
-<DialogTrigger>Open</DialogTrigger>
+<DialogTrigger className="w-full">
+    {children}
+</DialogTrigger>
 <DialogContent>
     <DialogHeader>
-    <DialogTitle>Are you absolutely sure?</DialogTitle>
+    <DialogTitle>Upadte Cover</DialogTitle>
     <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
+            {CoverOptions.map((cover,index)=>(
+                <div key={index}>
+                    <Image src={cover?.imageUrl} width={200} height={140}
+                    className="h-[70px] w-full rounded-md object-cover"/>
+                </div>
+            ))}
+        </div>
     </DialogDescription>
     </DialogHeader>
+    <DialogFooter className="">
+        <DialogClose asChild>
+            <Button type="button" variant="secondary">
+            Close
+            </Button>
+        </DialogClose>
+        <DialogClose asChild>
+            <Button type="button">
+            Update
+            </Button>
+        </DialogClose>
+        </DialogFooter>
 </DialogContent>
 </Dialog>
 
