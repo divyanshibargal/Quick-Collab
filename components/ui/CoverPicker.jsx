@@ -1,3 +1,4 @@
+"useClient"
 import Image from "next/image"
 import CoverOptions from "../ui/CoverOptions"
 import {
@@ -14,7 +15,7 @@ import { Button } from "./button"
 import { useState } from "react"
 
 
-function CoverPicker({children}) {
+function CoverPicker({children , setNewCover}) {
     const[selectedCover,setSelectedCover]=useState();
 return (
 <Dialog>
@@ -23,11 +24,13 @@ return (
 </DialogTrigger>
 <DialogContent>
     <DialogHeader>
-    <DialogTitle>Upadte Cover</DialogTitle>
+    <DialogTitle>Update Cover</DialogTitle>
     <DialogDescription>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
             {CoverOptions.map((cover,index)=>(
-                <div key={index}>
+                <div key={index} onClick={()=>setSelectedCover(cover?.imageUrl)}
+                className={`${selectedCover==cover?.imageUrl && 'border-primary border-2'} p-1 rounded-md`}
+                >
                     <Image src={cover?.imageUrl} width={200} height={140}
                     className="h-[70px] w-full rounded-md object-cover"/>
                 </div>
@@ -41,7 +44,7 @@ return (
             Close
             </Button>
         </DialogClose>
-        <DialogClose asChild>
+        <DialogClose asChild onClick={()=>setNewCover(selectedCover)}>
             <Button type="button">
             Update
             </Button>
