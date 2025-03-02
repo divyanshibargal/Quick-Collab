@@ -31,6 +31,7 @@ const OnCreateWorkspace = async()=>{
         coverImage:coverImage,
         createdBy:user?.primaryEmailAddress?.emailAddress,
         id:workspaceId,
+        documentName:"Untitled Document",
         orgId:orgId?orgId:user?.primaryEmailAddress?.emailAddress
 
     });
