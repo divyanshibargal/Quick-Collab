@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import Logo from '../../dashboard/_components/Logo'
-import { Bell } from 'lucide-react'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { Bell, Loader2Icon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Button } from '../../../../components/ui/button'
-import { collection, onSnapshot, query,  where } from 'firebase/firestore'
 import { db } from '../../../../config/firebaseconfig'
-import DocumentList from './DocumentList'
+import Logo from '../../dashboard/_components/Logo'
+import DocumentList from './DocumentList';
+import { doc, setDoc } from "firebase/firestore";
+import uuid4 from "uuid4";
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+
 
 function SideNav({params}) {
-    const [documentList,setdocumentList]=useState();
+    const [documentList,setdocumentList]=useState([]);
+    const {user}=useUser();
+    const [loading,setLoading]=useState(false);
+    const router=useRouter();
+
     useEffect(()=>{
         params&&GetDocumentList();
     },[params])
@@ -17,10 +26,27 @@ function SideNav({params}) {
         where('workspaceId','==',Number(params?.workspaceid)));
 
         const unsubscribe=onSnapshot(q,(querySnapshot)=>{
+            setdocumentList([]);
             querySnapshot.forEach((doc)=>{
                 setdocumentList(documentList=>[...documentList,doc.data()])
             })
         })
+    }
+
+    const CreateNewDocument=async()=>{
+        setLoading(true)
+        const docId=uuid4();
+        await setDoc(doc(db,"workspaceDocuments",docId.toString()),{
+            workspaceId:Number(params?.workspaceId),
+            createdBy:user?.primaryEmailAddress?.emailAddress,
+            coverImage:null,
+            emoji:null,
+            id:docId,
+            documentName:"Untitled Document",
+            documentOutput:[]
+        })
+        setLoading(false)
+        router.replace('/workspace/'+params?.workspaceId+"/"+docId);
     }
 
 return (
@@ -33,12 +59,14 @@ return (
         <div>
             <div className='flex justify-between items-center'>
             <h2 className='font-medium'>Workspace Name</h2>
-            <Button className='sm'>+</Button>
+            <Button className='sm' onClick={CreateNewDocument}>
+                {loading?<Loader2Icon className='h-4 w-4 animate-spin'/> :"+"}
+            </Button>
             </div>
         </div>
 
         {/* Document List */}
-        <DocumentList documentList={documentList}/>
+        <DocumentList documentList={documentList} params={params}/>
 
     </div>
 )

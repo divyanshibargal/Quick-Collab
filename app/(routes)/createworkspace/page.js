@@ -1,16 +1,16 @@
 "use client";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { doc, documentId, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { Loader2Icon, SmilePlus } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import uuid4 from "uuid4";
 import { Button } from "../../../components/ui/button";
 import CoverPicker from "../../../components/ui/CoverPicker";
 import EmojiPickerCom from "../../../components/ui/EmojiPickerCom";
 import { Input } from "../../../components/ui/input";
 import { db } from "../../../config/firebaseconfig";
-import { useRouter } from "next/navigation";
-import uuid4 from "uuid4";
 
 
 function CreateWorkspace() {
@@ -31,7 +31,6 @@ const OnCreateWorkspace = async()=>{
         coverImage:coverImage,
         createdBy:user?.primaryEmailAddress?.emailAddress,
         id:workspaceId,
-        documentName:"Untitled Document",
         orgId:orgId?orgId:user?.primaryEmailAddress?.emailAddress
 
     });
@@ -43,6 +42,7 @@ const OnCreateWorkspace = async()=>{
         coverImage:null,
         emoji:null,
         id:docId,
+        documentName:"Untitled Document",
         documentOutput:[]
     })
 
