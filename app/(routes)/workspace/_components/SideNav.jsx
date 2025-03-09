@@ -1,14 +1,14 @@
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { useUser } from '@clerk/nextjs'
+import { collection, doc, onSnapshot, query, setDoc, where } from 'firebase/firestore'
 import { Bell, Loader2Icon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import uuid4 from "uuid4"
 import { Button } from '../../../../components/ui/button'
+import { Progress } from '../../../../components/ui/progress'
 import { db } from '../../../../config/firebaseconfig'
 import Logo from '../../dashboard/_components/Logo'
-import DocumentList from './DocumentList';
-import { doc, setDoc } from "firebase/firestore";
-import uuid4 from "uuid4";
-import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+import DocumentList from './DocumentList'
 
 
 function SideNav({params}) {
@@ -45,6 +45,12 @@ function SideNav({params}) {
             documentName:"Untitled Document",
             documentOutput:[]
         })
+
+        await setDoc(doc(db,"documentOutput",docId.toString()),{
+            docId:docId,
+            output:[]
+        })
+        
         setLoading(false)
         router.replace('/workspace/'+params?.workspaceId+"/"+docId);
     }
@@ -67,6 +73,14 @@ return (
 
         {/* Document List */}
         <DocumentList documentList={documentList} params={params}/>
+
+        {/* Progress Bar */}
+        <div className='absolute bottom-10 w-[85%]'>
+        <Progress value={33} />
+        <h2 className='text-sm font-light my-2'><strong>{documentList?.length}</strong> Out of <strong>5</strong> files used</h2>
+        <h2 className='text-sm font-light'>Upgrade your plan for unlimited access</h2>
+        </div>
+
 
     </div>
 )
