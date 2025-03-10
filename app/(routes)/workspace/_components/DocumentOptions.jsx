@@ -8,7 +8,7 @@ import {
 } from "../../../../components/ui/dropdown-menu"
 
 
-function DocumentOptions() {
+function DocumentOptions({doc,deleteDocument}) {
 return (
     <div>
         <DropdownMenu>
@@ -18,7 +18,10 @@ return (
 <DropdownMenuContent>
     <DropdownMenuItem className="flex gap-2"><Link2Icon className='w-4 h-4'/>Share</DropdownMenuItem>
     <DropdownMenuItem className="flex gap-2"><PenBox className='w-4 h-4'/>Rename</DropdownMenuItem>
-    <DropdownMenuItem className="flex gap-2 text-red-500"><Trash2 className='w-4 h-4'/>Delete</DropdownMenuItem>
+    <DropdownMenuItem
+    onClick={()=>deleteDocument(doc?.id)}
+    className="flex gap-2 text-red-500">
+        <Trash2 className='w-4 h-4'/>Delete</DropdownMenuItem>
 </DropdownMenuContent>
 </DropdownMenu>
 

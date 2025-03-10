@@ -1,10 +1,16 @@
 import Image from "next/image"
-import {doc} from "firebase/firestore"
+import {deleteDoc, doc} from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import DocumentOptions from "./DocumentOptions"
+import { db } from "../../../../config/firebaseconfig";
+import { toast } from "sonner";
 
 function DocumentList({documentList,params}) {
     const router=useRouter();
+    const DeleteDocument=async(docId)=>{
+        await deleteDoc(doc(db, "workspaceDocuments", docId));
+        toast("Document Deleted !");
+    }
 return (
     <div>
     {documentList.map((doc,index)=>(
@@ -17,7 +23,7 @@ return (
             {!doc.emoji && <Image src={'/loopdocument.svg'} width={20} height={20} />}
                 <h2 className="flex gap-2">{doc?.emoj}{doc.documentName}</h2>
             </div>
-            <DocumentOptions/>
+            <DocumentOptions doc={doc} deleteDocument={(docId)=>DeleteDocument(docId)} />
         </div>
     ))}
     </div>

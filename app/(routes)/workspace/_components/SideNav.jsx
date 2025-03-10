@@ -34,6 +34,9 @@ function SideNav({params}) {
     }
 
     const CreateNewDocument=async()=>{
+
+    
+
         setLoading(true)
         const docId=uuid4();
         await setDoc(doc(db,"workspaceDocuments",docId.toString()),{
@@ -74,12 +77,12 @@ return (
         {/* Document List */}
         <DocumentList documentList={documentList} params={params}/>
 
-        {/* Progress Bar */}
+        {/* Progress Bar
         <div className='absolute bottom-10 w-[85%]'>
-        <Progress value={33} />
+        <Progress value={(documentList?.length)} />
         <h2 className='text-sm font-light my-2'><strong>{documentList?.length}</strong> Out of <strong>5</strong> files used</h2>
         <h2 className='text-sm font-light'>Upgrade your plan for unlimited access</h2>
-        </div>
+        </div> */}
 
 
     </div>
