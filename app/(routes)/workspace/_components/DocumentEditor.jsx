@@ -1,15 +1,14 @@
-import React from 'react'
 import DocumentHeader from '../_components/DocumentHeader'
 import DocumentInfo from '../_components/DocumentInfo'
 
-function DocumentEditor() {
+function DocumentEditor({params}) {
 return (
     <div>
         {/* Header */}
             <DocumentHeader/>
     
         {/* Document Info */}
-            <DocumentInfo />
+            <DocumentInfo params={params} />
 
         {/* Text Editor */}
 
