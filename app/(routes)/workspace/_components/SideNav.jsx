@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import uuid4 from "uuid4"
 import { Button } from '../../../../components/ui/button'
-import { Progress } from '../../../../components/ui/progress'
+// import { Progress } from '../../../../components/ui/progress'
 import { db } from '../../../../config/firebaseconfig'
 import Logo from '../../dashboard/_components/Logo'
 import DocumentList from './DocumentList'
@@ -34,9 +34,6 @@ function SideNav({params}) {
     }
 
     const CreateNewDocument=async()=>{
-
-    
-
         setLoading(true)
         const docId=uuid4();
         await setDoc(doc(db,"workspaceDocuments",docId.toString()),{

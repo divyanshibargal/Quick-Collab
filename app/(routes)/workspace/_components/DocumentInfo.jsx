@@ -1,11 +1,12 @@
 "use client"
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc , updateDoc } from 'firebase/firestore'
 import { SmilePlus } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import CoverPicker from '../../../../components/ui/CoverPicker'
 import EmojiPickerCom from '../../../../components/ui/EmojiPickerCom'
 import { db } from '../../../../config/firebaseconfig'
+import { toast } from "sonner";
 
 function DocumentInfo({params}) {
 const [coverImage,setCoverImage]=useState('/cover.png')
@@ -13,7 +14,7 @@ const [Emoji,setEmoji]=useState();
 const [documentInfo,setdocumentInfo]=useState();
 
 useEffect(()=>{
-params&&GetDocumentInfo();
+params && GetDocumentInfo();
 },[params])
 
 
@@ -28,11 +29,22 @@ const GetDocumentInfo=async()=>{
         docSnap.data()?.coverImage&&setCoverImage(docSnap.data()?.coverImage);
     }
 }
-
+const updateDocumentInfo= async(key, value)=>{
+    console.log(params?.documentid);
+  const docRef = doc(db,'workspaceDocuments',params?.documentid);
+  await updateDoc(docRef,{
+    [key]:value
+  })
+  toast('Document Updated');
+console.log("running");
+}
     return (
     <div>
          {/* Cover */}
-        <CoverPicker setNewCover={(cover)=>setCoverImage(cover)}>
+        <CoverPicker setNewCover={(cover)=>{
+            setCoverImage(cover);
+            updateDocumentInfo('coverImage',cover);
+        }}>
         <div className="relative group">
         <h2 className="hidden absolute p-4 w-full h-full items-center group-hover:flex justify-center">
             Change cover
