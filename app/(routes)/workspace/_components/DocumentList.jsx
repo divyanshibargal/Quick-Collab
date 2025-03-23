@@ -21,7 +21,7 @@ return (
         ${doc?.id==params?.documentid && 'bg-white'}`}>
             <div className="flex gap-2 items-center">
             {!doc.emoji && <Image src={'/loopdocument.svg'} width={20} height={20} />}
-                <h2 className="flex gap-2">{doc?.emoj}{doc.documentName}</h2>
+                <h2 className="flex gap-2">{doc?.Emoji}{doc.documentName}</h2>
             </div>
             <DocumentOptions doc={doc} deleteDocument={(docId)=>DeleteDocument(docId)} />
         </div>

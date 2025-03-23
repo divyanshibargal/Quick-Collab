@@ -1,5 +1,6 @@
 import DocumentHeader from '../_components/DocumentHeader'
 import DocumentInfo from '../_components/DocumentInfo'
+import RichDocumentEditor from '../_components/RichDocumentEditor'
 
 function DocumentEditor({params}) {
 return (
@@ -11,7 +12,7 @@ return (
             <DocumentInfo params={params} />
 
         {/* Text Editor */}
-
+            <RichDocumentEditor />
 
     </div>
 )

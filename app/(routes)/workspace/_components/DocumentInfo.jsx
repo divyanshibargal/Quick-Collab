@@ -1,12 +1,12 @@
 "use client"
-import { doc, getDoc , updateDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { SmilePlus } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { toast } from "sonner"
 import CoverPicker from '../../../../components/ui/CoverPicker'
 import EmojiPickerCom from '../../../../components/ui/EmojiPickerCom'
 import { db } from '../../../../config/firebaseconfig'
-import { toast } from "sonner";
 
 function DocumentInfo({params}) {
 const [coverImage,setCoverImage]=useState('/cover.png')
@@ -31,11 +31,11 @@ const GetDocumentInfo=async()=>{
 }
 const updateDocumentInfo= async(key, value)=>{
     console.log(params?.documentid);
-  const docRef = doc(db,'workspaceDocuments',params?.documentid);
-  await updateDoc(docRef,{
+const docRef = doc(db,'workspaceDocuments',params?.documentid);
+await updateDoc(docRef,{
     [key]:value
-  })
-  toast('Document Updated');
+})
+toast('Document Updated');
 console.log("running");
 }
     return (
@@ -65,7 +65,11 @@ console.log("running");
 
         {/* Emoji Picker  */}
         <div className='absolute ml-10 mt-[-40px] cursor-pointer'>
-        <EmojiPickerCom setEmojiIcon={(Emoji)=>setEmoji(Emoji)}>
+        <EmojiPickerCom
+        setEmojiIcon={(Emoji)=>{
+            setEmoji(Emoji);
+            updateDocumentInfo('Emoji',Emoji)
+            }}>
 
         <div className='bg-[#ffffffb0] p-4 rounded-md'>
             {Emoji?<span className='text-5xl'>{Emoji}</span>  :<SmilePlus className='h-10 w-10 text-gray-500'/> }
@@ -78,6 +82,7 @@ console.log("running");
             <input type='text' placeholder='Untitled Document'
             defaultValue={documentInfo?.documentName}
             className='font-bold text-4xl outline-none'
+            onBlur={(event)=>updateDocumentInfo('documentName',event.target.value)}
             />
         </div>
     </div>
