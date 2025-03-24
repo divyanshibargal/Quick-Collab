@@ -1,4 +1,4 @@
-import {React,useRef,useEffect} from 'react'
+import {React,useRef,useEffect, useState} from 'react'
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Delimiter from '@editorjs/delimiter';
@@ -8,21 +8,44 @@ import EditorjsList from '@editorjs/list';
 import CodeTool from '@editorjs/code';
 import Table from '@editorjs/table'
 import ImageTool from '@editorjs/image';
+import { db } from '../../../../config/firebaseconfig';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { useUser } from '@clerk/nextjs';
 
-function RichDocumentEditor() {
+function RichDocumentEditor({params}) {
     const ref=useRef();
     let editor;
+    const {user}=useUser();
+    const [documentOutput, setDocumentOutput] = useState([]);
+    let isFetched=false
+
+    // useEffect(()=>{
+    //     params&&GetDocumentOutput()
+    // },[params])
 
     useEffect(()=>{
-        InitEditor();
-    },[])
+        user&&InitEditor();
+    },[user])
 
     /*
     Use to save document data
     */
     const SaveDocument=()=>{
-        ref.current.save().then((outputData)=>{
-            console.log(outputData)
+        ref.current.save().then(async(outputData)=>{
+            const docRef=doc(db,'documentOutput',params?.documentid);
+            await updateDoc(docRef,{
+                output:outputData,
+                editedBy:user?.primaryEmailAddress?.emailAddress
+            })
+        })
+    }
+
+    const GetDocumentOutput=()=>{
+        const unsubscribe=onSnapshot(doc(db,'documentOutput',params?.documentid),
+        (doc)=>{
+            if (doc.data()?.editedBy != user?.primaryEmailAddress?.emailAddress||isFetched==false)
+        doc.data().editedBy&&editor?.render(JSON.parse(doc.data()?.output));
+        isFetched=true
         })
     }
 
@@ -34,6 +57,9 @@ function RichDocumentEditor() {
                     SaveDocument()
                 },
 
+                onReady:()=>{
+                    GetDocumentOutput()
+                },
                 /**
                  * Id of Element that should contain Editor instance
                  */
