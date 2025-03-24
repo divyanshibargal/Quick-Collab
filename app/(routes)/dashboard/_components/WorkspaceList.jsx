@@ -1,14 +1,34 @@
 "use client"
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { AlignLeft, LayoutGrid } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../../../components/ui/button";
 import Link from "next/link";
+import WorkspaceItemList from "../_components/WorkspaceItemList"
+import { db } from "../../../../config/firebaseconfig";
+import { collection, getDocs, query, where } from "firebase/firestore";
+
 function WorkspaceList() {
     const{user}=useUser();
-
+    const{orgId}=useAuth();
     const[workspaceList,setWorkspaceList]=useState([]);
+
+    useEffect(()=>{
+        user&&getWorkspaceList()
+    },[orgId,user])
+
+    const getWorkspaceList=async()=>{
+        setWorkspaceList([]);
+        const q=query(collection(db,'Workspace'),where('orgId','==',orgId?orgId:user?.primaryEmailAddress?.emailAddress))
+        const querySnapshot=await getDocs(q);
+
+        setWorkspaceList([]);
+        querySnapshot.forEach((doc)=>{
+            console.log(doc.data())
+            setWorkspaceList(prev=>[...prev,doc.data()])
+        })
+    }
 return (
     <div
     className='my-10 p-10 md:px-24 lg:px-36 xl:px-52'>
@@ -42,7 +62,9 @@ return (
 
                 </div>
                 :
-                <div>Workspace List</div>
+                <div>
+                    <WorkspaceItemList workspaceList={workspaceList} />
+                </div>
         }
 
     </div>
