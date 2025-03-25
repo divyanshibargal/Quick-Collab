@@ -5,7 +5,7 @@ import SideNav from '../../_components/SideNav'
 
 function WorkspaceDocument({params}) {
 return (
-    <Room>
+    <Room params = {params}>
     <div>
         {/* SideNav */}
         <div className=''>
