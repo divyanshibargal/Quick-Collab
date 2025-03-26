@@ -9,6 +9,7 @@ import { Button } from '../../../../components/ui/button'
 import { db } from '../../../../config/firebaseconfig'
 import Logo from '../../dashboard/_components/Logo'
 import DocumentList from './DocumentList'
+import NotificationBox from './NotificationBox'
 
 
 function SideNav({params}) {
@@ -59,7 +60,9 @@ return (
     <div className='h-screen md:w-72 hidden md:block fixed bg-blue-50 p-5 shadow-md'>
         <div className='flex justify-between items-center'>
             <Logo/>
+            <NotificationBox>
             <Bell className='h-5 w-5 text-gray-500' />
+            </NotificationBox>
         </div>
         <hr className='my-5'></hr>
         <div>

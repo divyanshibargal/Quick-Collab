@@ -6,7 +6,7 @@ import { Composer, Thread } from "@liveblocks/react-ui";
 function CommentBox() {
     const { threads } = useThreads();
   return (
-    <div className="w-[200px] h-[200px] shadow-lg rounded-lg overflow-auto">
+    <div className="w-[250px] h-[250px] shadow-lg rounded-lg overflow-auto">
       {threads?.map((thread) => (
         <Thread key={thread.id} thread={thread} />
       ))}

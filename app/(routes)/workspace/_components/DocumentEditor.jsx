@@ -17,13 +17,15 @@ return (
             <DocumentInfo params={params} />
 
         {/* Text Editor */}
+        <div className='grid grid-cols-4'>
+            <div className='col-span-3'>
             <RichDocumentEditor params={params} />
-
-            <div className='fixed right-5 bottom-5 z-50'>
+        </div>
+            <div className='fixed right-5 bottom-5'>
             <Button onClick={()=>setOpenComment(!openComment)}>{openComment?<X/>:<MessageCircle/>}</Button>
             {openComment &&<CommentBox/>}
             </div>
-
+            </div>
     </div>
 )
 }
